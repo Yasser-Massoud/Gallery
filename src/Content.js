@@ -1,79 +1,47 @@
-import React from 'react';
-
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
-
-import Photo from './Photo';
+import React,{useState,useEffect} from 'react'
 import ServiceClientManager from './ServiceClientManager';
+import Grid from '@material-ui/core/Grid';
 
-class Content extends React.Component {
-    constructor() {
-        super();
+export default function Content() {
+    const [images,setImages] = useState([])
+        // a counter to make the load more button loads more 10 photos each time clicked 
 
-        this.state = { listPhoto: null };
-
-        this.loadListPhotoSuccess = this.loadListPhotoSuccess.bind(this);
-        this.loadListPhotoError = this.loadListPhotoError.bind(this);
-        this.createListPhotoGrid = this.createListPhotoGrid.bind(this);
+    const [counter,setCounter] = useState(10)
+    const increaseCounter = ()=>{
+        setCounter(counter+10)
+       
     }
+    const successCallback = (json)=>{
+       
+        let imgs = json.filter((pic,index)=>pic.albumId % 2 === 0)
+               // we can also load images through the api using apiConfig.baseURL?albumId=..&id=.. but i choose using Array.filter
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.selectedAlbum !== this.props.selectedAlbum) {
-            this.setState({ listPhoto: null });
-            ServiceClientManager.retrieveListPhoto(this.props.selectedAlbum, this.loadListPhotoSuccess, this.loadListPhotoError);
-        }
+        imgs = imgs.filter((img,index)=>img.id % 50 ===1 )
+        setImages(imgs)
     }
-
-    loadListPhotoSuccess(result) {
-        this.setState({ listPhoto: result });
+     const errorCallback = (error)=>{
+        console.error(error)
     }
-
-    loadListPhotoError(message) {
-        alert('error : ' + message);
-    }
-
-    createListPhotoGrid(listPhoto) {
-        return listPhoto.map((photo) => (
-            <Photo key={photo.id} photo={photo} />
-        ));
-    }
-
-    render() {
-        if (!this.props.selectedAlbum) {
-            return (
-                <Typography
-                    align="center"
-                    style={{ marginTop: 40, color: 'gray' }}
-                >
-                    No album selected
-                </Typography>
-            );
-        } else {
-            const listPhoto = this.state.listPhoto;
-            if (!listPhoto) {
-                return (
-                    <div style={{ textAlign: 'center' }}>
-                        <CircularProgress
-                            size={100}
-                            thickness={10}
-                            style={{ marginTop: 40 }} />
-                        <Typography
-                            align="center"
-                            style={{ marginTop: 20, color: 'gray' }}
-                        >
-                            Loading Album...
-                        </Typography>
-                    </div>
-                );
-            } else {
-                return (
-                    <div style={{ textAlign: 'center' }}>
-                        {this.createListPhotoGrid(listPhoto)}
-                    </div >
-                );
+    useEffect(() => {
+        ServiceClientManager.retrieveAll(successCallback,errorCallback)
+        
+    }, [])
+    return (
+        <div>
+             <Grid container >
+            {
+                images && images.filter((photo,index)=>index<counter).map(img=>[
+                   
+                    
+                        <Grid key={img.id} xs={12} md={6} lg={4}>
+                            <img src={img.url} alt="" />
+                        </Grid>
+                   
+                ])
             }
-        }
-    }
+             </Grid>
+             <button onClick={increaseCounter} 
+             style={{backgroundColor:"blue",color:"white",padding:"15px",marginTop:"25px",textAlign:"center",marginLeft:"50%"}}>Load more</button>
+        </div>
+    )
 }
-
-export default Content;

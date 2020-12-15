@@ -3,7 +3,6 @@ import React, { Fragment } from 'react';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import TopBar from './TopBar';
-import Navigation from './Navigation';
 
 class Header extends React.Component {
     constructor() {
@@ -27,11 +26,7 @@ class Header extends React.Component {
                     title={'My Album Gallery'}
                     iconButton={<MenuIcon />}
                     onIconButtonClick={this.handleNavigationToggle}/>
-                <Navigation
-                    isNavigationOpen={this.state.isNavigationOpen}
-                    onNavigationToggle={this.handleNavigationToggle}
-                    selectedAlbum={this.props.selectedAlbum}
-                    onAlbumChange={this.props.onAlbumChange} />
+          
             </Fragment >
         );
     }

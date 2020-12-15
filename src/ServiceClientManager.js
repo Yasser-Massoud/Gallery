@@ -1,41 +1,32 @@
+
+// fetching  from api and get all photos 
 function ServiceClientManager() {
-    var baseAPI = 'https://jsonplaceholder.typicode.com/';
+    var baseAPI = 'https://jsonplaceholder.typicode.com/photos';
 
     var _serviceDefinition = {
-        retrieveListAlbum: retrieveListAlbum,
-        retrieveListPhoto: retrieveListPhoto,
-        retrieveDetailPhoto: retrieveDetailPhoto
+        retrieveAll:retrieveAll
     }
 
     function callService(serviceUrl, successCallback, errorCallback) {
         var promise = fetch(serviceUrl)
-            .then(function (response) {
+            .then( response=> {
                 return response.json();
             })
-            .then(function (json) {
+            .then(json => {
                 successCallback(json);
             })
-            .catch(function (error) {
+            .catch(error => {
                 errorCallback(error);
             });
 
         return promise;
     }
 
-    function retrieveListAlbum(successCallback, errorCallback) {
-        var serviceUrl = baseAPI + 'albums';
+  
+    function retrieveAll(successCallback, errorCallback) {
+        var serviceUrl = baseAPI;
         return callService(serviceUrl, successCallback, errorCallback);
     }
-
-    function retrieveListPhoto(albumId, successCallback, errorCallback) {
-        var serviceUrl = baseAPI + 'photos?albumId=' + albumId;
-        return callService(serviceUrl, successCallback, errorCallback);
-    }
-
-    function retrieveDetailPhoto(photoId) {
-        throw 'not implemented yet!';
-    }
-
     return _serviceDefinition;
 };
 
