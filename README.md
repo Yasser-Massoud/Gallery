@@ -4,7 +4,7 @@ first of all please do  npm install
 >>npm start serves the app 
 >> The main functionality of the app is working perfectly
 >> UI component use [Material UI](https://github.com/callemall/material-ui).<br/>
->> fetching photos from an api [JSONPlaceholder](https://jsonplaceholder.typicode.com/).
+>> fetching photos from an api [JSONPlaceholder](https://jsonplaceholder.typicode.com/photos).
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
