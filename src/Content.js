@@ -41,7 +41,7 @@ export default function Content() {
             }
              </Grid>
              <button onClick={increaseCounter} 
-             style={{backgroundColor:"blue",color:"white",padding:"15px",marginTop:"25px",textAlign:"center",marginLeft:"50%"}}>Load more</button>
+             style={{backgroundColor:"black",color:"white",padding:"15px",marginTop:"25px",textAlign:"center",marginLeft:"50%"}}>Load More</button>
         </div>
     )
 }
